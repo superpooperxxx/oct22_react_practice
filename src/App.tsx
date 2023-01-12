@@ -6,20 +6,21 @@ import usersFromServer from './api/users';
 import productsFromServer from './api/products';
 import categoriesFromServer from './api/categories';
 import { ProductItem } from './components/ProductItem/ProductItem';
-// import { Category } from './types/Category';
+import { Category } from './types/Category';
+import { User } from './types/User';
 
 const productWithCategory = productsFromServer
   .map(product => ({
     ...product,
     category: categoriesFromServer
-      .find(category => category.id === product.categoryId),
+      .find(category => category.id === product.categoryId) as Category,
   }));
 
 const products = productWithCategory
   .map(product => ({
     ...product,
     owner: usersFromServer
-      .find(user => user.id === product.category?.ownerId),
+      .find(user => user.id === product.category?.ownerId) as User,
   }));
 
 window.console.log(products);
