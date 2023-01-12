@@ -26,6 +26,7 @@ window.console.log(products);
 
 export const App: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState('');
+  const [inputText, setInputText] = useState('');
 
   let filteredProducts = products;
 
@@ -33,6 +34,13 @@ export const App: React.FC = () => {
     filteredProducts = filteredProducts
       .filter(product => product.owner?.name === selectedUser);
   }
+
+  if (inputText !== '') {
+    filteredProducts = filteredProducts
+      .filter(product => product.name.toLowerCase().includes(inputText));
+  }
+
+  window.console.log(inputText);
 
   return (
     <div className="section">
@@ -76,21 +84,27 @@ export const App: React.FC = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  value={inputText}
+                  onChange={event => (
+                    setInputText(event.target.value.toLowerCase().trim())
+                  )}
                 />
 
                 <span className="icon is-left">
                   <i className="fas fa-search" aria-hidden="true" />
                 </span>
 
-                <span className="icon is-right">
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <button
-                    data-cy="ClearButton"
-                    type="button"
-                    className="delete"
-                  />
-                </span>
+                {inputText !== '' && (
+                  <span className="icon is-right">
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <button
+                      data-cy="ClearButton"
+                      type="button"
+                      className="delete"
+                      onClick={() => setInputText('')}
+                    />
+                  </span>
+                )}
               </p>
             </div>
 
